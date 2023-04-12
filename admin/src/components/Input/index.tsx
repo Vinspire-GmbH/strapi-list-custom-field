@@ -80,7 +80,7 @@ export default function Index({
   }
 
   const DataRecords = () => {
-    if(!value) {
+    if(!Array.isArray(JSON.parse(value))) {
       return <Typography>No data entries</Typography>;
     } else {
       return JSON.parse(value).map((entry: string, index: number) => (
