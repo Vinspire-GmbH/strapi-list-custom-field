@@ -1,6 +1,6 @@
 {
   "name": "@johnbraum/list-custom-field",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Provides a simple string list custom field for strapi",
   "strapi": {
     "name": "list",

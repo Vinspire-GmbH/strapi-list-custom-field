@@ -47,15 +47,11 @@ export default function Index({
 
   const onMoveEntry = (index: number, direction: string) => {
     let items = value ? JSON.parse(value) : [];
-    const changeValuePosition = (arr, init, target) => {[arr[init],arr[target]] = [arr[target],arr[init]]; return arr}
-    console.log(index);
-    console.log(items);
     if(direction === 'up') {
       [ items[index], items[index-1] ] = [ items[index-1], items[index] ];
     } else {
       [ items[index], items[index+1] ] = [ items[index+1], items[index] ];
     }
-    console.log(items);
     onChange({
       target: {
         name: name,
@@ -68,7 +64,6 @@ export default function Index({
 
   const onRemoveEntry = (event) => {
     const items = value ? JSON.parse(value) : [];
-    console.log(event.target);
     items.splice(event.target.dataset.index as number, 1);
     onChange({
       target: {
@@ -89,10 +84,10 @@ export default function Index({
             <Typography>{entry}</Typography>
             <Flex gap={1}>
               <IconButtonGroup>
-                <IconButton disabled={index === 0} onClick={() => onMoveEntry(index, 'up')} data-index={index} label="Create" icon={<ArrowUp aria-hidden />} />
-                <IconButton disabled={index === JSON.parse(value).length -1} onClick={() => onMoveEntry(index, 'down')} data-index={index} label="Create" icon={<ArrowDown aria-hidden />} />
+                <IconButton disabled={index === 0} onClick={() => onMoveEntry(index, 'up')} data-index={index} label="Move Up" icon={<ArrowUp aria-hidden />} />
+                <IconButton disabled={index === JSON.parse(value).length -1} onClick={() => onMoveEntry(index, 'down')} data-index={index} label="Move Down" icon={<ArrowDown aria-hidden />} />
               </IconButtonGroup>
-              <IconButton disabled={disabled} onClick={onRemoveEntry} data-index={index} noBorder label="Create" icon={<Trash aria-hidden />} />
+              <IconButton disabled={disabled} onClick={onRemoveEntry} data-index={index} noBorder label="Remove" icon={<Trash aria-hidden />} />
             </Flex>
           </Flex>
 

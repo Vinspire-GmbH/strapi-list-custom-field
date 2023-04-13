@@ -8,37 +8,17 @@ const name = pluginPkg.strapi.name;
 
 export default {
   register(app: any) {
-    app.addMenuLink({
-      to: `/plugins/${pluginId}`,
-      icon: PluginIcon,
-      intlLabel: {
-        id: `${pluginId}.plugin.name`,
-        defaultMessage: name,
-      },
-      Component: async () => {
-        const component = await import(/* webpackChunkName: "[request]" */ './pages/App');
-
-        return component;
-      },
-      permissions: [
-        // Uncomment to set the permissions of the plugin here
-        // {
-        //   action: '', // the action name should be plugin::plugin-name.actionType
-        //   subject: null,
-        // },
-      ],
-    });
     app.customFields.register({
       name: "list",
       pluginId: "list",
       type: "json",
       intlLabel: {
-        id: "ai-text-generation.text-ai.label",
-        defaultMessage: "List Entry",
+        id: "list-custom-field.label",
+        defaultMessage: "List custom field",
       },
       intlDescription: {
-        id: "ai-text-generation.text-ai.description",
-        defaultMessage: "List of entries",
+        id: "list-custom-field.description",
+        defaultMessage: "Provides simple list custom field and serves it as a json array",
       },
       icon: PluginIcon,
       components: {
