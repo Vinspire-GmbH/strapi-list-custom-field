@@ -10,7 +10,7 @@ import {
   IconButtonGroup
 } from '@strapi/design-system';
 
-import { Plus, Trash, ArrowUp, ArrowDown } from '@strapi/icons';
+import { Plus, Trash, ArrowUp, ArrowDown, Pencil, Check } from '@strapi/icons';
 import { useIntl } from 'react-intl';
 
 export default function Index({
@@ -29,6 +29,8 @@ export default function Index({
   const { formatMessage } = useIntl();
 
   const [newEntry, setNewEntry] = useState('');
+  let editValueEntry = '';
+  const [selectedIndex, setSelectedIndex] = useState(-1);
 
   const onAddEntry = () => {
     if(!newEntry) return;
@@ -74,6 +76,37 @@ export default function Index({
     });
   }
 
+  const onEditEntry = (index: number) => {
+    if(index === selectedIndex) {
+      setSelectedIndex(-1);
+      const items = value ? JSON.parse(value) : [];
+      items[index] = editValueEntry;
+      editValueEntry = '';
+      onChange({
+        target: {
+          name: name,
+          value: JSON.stringify(items),
+          type: attribute.type
+        }
+      });
+      return;
+    }
+    setSelectedIndex(index);
+  }
+
+  const EditEntryButton  = ({index}) => {
+    return index === selectedIndex ? <IconButton background="primary100" onClick={() => onEditEntry(index)} data-index={index} label="Save" icon={<Check aria-hidden />} /> : <IconButton onClick={() => onEditEntry(index)} data-index={index} label="Edit" icon={<Pencil aria-hidden />} />;
+  }
+
+  const EntryContent = ({entry, index}) => {
+    if(index !== selectedIndex) {
+      return <Typography>{entry}</Typography>;
+    }
+    else {
+      return <FieldInput defaultValue={entry} onChange={(e: any) => editValueEntry = e.target.value} id={index + '-input'} placeholder="..." />;
+    }
+  }
+
   const DataRecords = () => {
     if(!Array.isArray(JSON.parse(value))) {
       return <Typography>No data entries</Typography>;
@@ -81,8 +114,9 @@ export default function Index({
       return JSON.parse(value).map((entry: string, index: number) => (
         <Box padding={[2]} background="neutral150" shadow="filterShadow" key={index + '-entry'}>
           <Flex alignItems="center" gap={5} justifyContent="space-between">
-            <Typography>{entry}</Typography>
+            <EntryContent index={index} entry={entry} />
             <Flex gap={1}>
+              <EditEntryButton index={index} />
               <IconButtonGroup>
                 <IconButton disabled={index === 0} onClick={() => onMoveEntry(index, 'up')} data-index={index} label="Move Up" icon={<ArrowUp aria-hidden />} />
                 <IconButton disabled={index === JSON.parse(value).length -1} onClick={() => onMoveEntry(index, 'down')} data-index={index} label="Move Down" icon={<ArrowDown aria-hidden />} />
