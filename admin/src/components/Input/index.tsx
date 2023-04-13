@@ -79,6 +79,10 @@ export default function Index({
   const onEditEntry = (index: number) => {
     if(index === selectedIndex) {
       setSelectedIndex(-1);
+      if(!editValueEntry) {
+        return;
+      }
+
       const items = value ? JSON.parse(value) : [];
       items[index] = editValueEntry;
       editValueEntry = '';
